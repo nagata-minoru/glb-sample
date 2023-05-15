@@ -24,8 +24,11 @@ import * as THREE from 'three';
     // キューブのジオメトリ（形状）を作成
     const geometry = new THREE.BoxGeometry(2, 2, 2);
     // テクスチャをロード
-    const texture = new THREE.TextureLoader().load('/textures/wall.jpg');
-    // テクスチャを使用したマテリアルを作成
+    let path = document.location.pathname;
+    path = path.substring(0, path.lastIndexOf('/') + 1);
+    let baseUrl = document.location.origin + path;
+    const texture = new THREE.TextureLoader().load(`${baseUrl}textures/wall.jpg`);
+        // テクスチャを使用したマテリアルを作成
     const material = new THREE.MeshBasicMaterial({ map: texture });
     // ジオメトリとマテリアルからメッシュ（実際に描画される3Dオブジェクト）を作成
     cube = new THREE.Mesh(geometry, material);

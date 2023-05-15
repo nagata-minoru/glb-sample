@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'three'; // Three.jsライブラリをインポートします。
 
 (() => {
   // シーン、カメラ、レンダラー、キューブの宣言
@@ -8,20 +8,41 @@ import * as THREE from 'three';
    * シーンの初期化
    */
   const init = () => {
+    // シーンを作成します。シーンはオブジェクトや光源を格納するコンテナです。
     scene = new THREE.Scene();
+
+    // カメラを作成します。ここでは透視投影カメラを使用します。
+    // 最初の引数は視野角(FOV)、次の引数はアスペクト比、最後の2つの引数はニアクリップとファークリップの平面です。
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    // WebGLを使用したレンダラーを作成します。これによりシーンが描画されます。
     renderer = new THREE.WebGLRenderer();
+
+    // レンダラーのサイズを現在のウィンドウのサイズに設定します。
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // レンダラーをDOMに追加します。これにより描画結果が表示されます。
     document.body.appendChild(renderer.domElement);
 
+    // キューブのジオメトリ（形状）を作成します。BoxGeometryは幅、高さ、奥行きを引数とします。
     const geometry = new THREE.BoxGeometry(2, 2, 2);
+
+    // テクスチャローダーを使用してテクスチャをロードします。テクスチャは画像を3Dオブジェクトにマッピングするために使用されます。
     let path = document.location.pathname;
     path = path.substring(0, path.lastIndexOf('/') + 1);
     let baseUrl = document.location.origin + path;
     const texture = new THREE.TextureLoader().load(`${baseUrl}textures/wall.jpg`);
+
+    // マテリアルを作成します。マテリアルはオブジェクトの表面の見た目（色、光沢等）を定義します。
     const material = new THREE.MeshBasicMaterial({ map: texture });
+
+    // ジオメトリとマテリアルからメッシュ（実際に描画される3Dオブジェクト）を作成します。
     cube = new THREE.Mesh(geometry, material);
+
+    // メッシュをシーンに追加します。
     scene.add(cube);
+
+    // カメラをZ軸上に移動（キューブを適切に見るため）
     camera.position.z = 5;
   }
 
@@ -29,8 +50,11 @@ import * as THREE from 'three';
    * ウィンドウがリサイズされた時のイベントハンドラ
    */
   const handleResize = () => {
+    // ウィンドウサイズの変更に対応するためにカメラのアスペクト比を再設定します。
     camera.aspect = window.innerWidth / window.innerHeight;
+    // カメラの投影行列を更新します。これはカメラの設定が変更された後に必要です。
     camera.updateProjectionMatrix();
+    // レンダラーのサイズを新しいウィンドウのサイズに再設定します。
     renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
@@ -38,16 +62,23 @@ import * as THREE from 'three';
    * アニメーションループ
    */
   const animate = () => {
+    // requestAnimationFrameを使用してブラウザにアニメーションを行うことを要求します。次の描画の準備ができたらanimate関数を呼び出します。
     requestAnimationFrame(animate);
+
+    // キューブの回転値を少しずつ増やしてアニメーションを作ります。
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+
+    // シーンとカメラを渡して描画を実行します。
     renderer.render(scene, camera);
   }
 
-  // イベントハンドラの設定
+  // ウィンドウのリサイズイベントにイベントハンドラを設定します。
   window.onresize = handleResize;
 
-  // 初期化とアニメーションの開始
+  // 初期化関数を呼び出してシーンをセットアップします。
   init();
+
+  // アニメーションループを開始します。
   animate();
 })();

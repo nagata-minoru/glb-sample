@@ -1,17 +1,25 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
+    <!-- 文字エンコーディングをUTF-8に設定 -->
     <meta charset="UTF-8" />
+    <!-- Internet Explorerの互換表示を無効に設定 -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- レスポンシブデザインを可能にするためのビューポート設定 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- ウェブページのタイトル -->
     <title>Three.js-sample</title>
 
+    <!-- ファビコンの設定 -->
     <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon" />
 
+    <!-- 外部CSSファイルのリンク -->
     <link rel="stylesheet" href="style.css" />
 
+    <!-- es-module-shimsのスクリプトファイルを非同期で読み込み -->
     <script src="https://unpkg.com/es-module-shims@1.7.0/dist/es-module-shims.js" defer></script>
 
+    <!-- Import Mapを設定し、パッケージ名をURLにマッピング -->
     <script type="importmap">
       {
         "imports": {
@@ -21,7 +29,9 @@
       }
     </script>
 
+    <!-- main.jsをモジュールとして非同期で読み込み -->
     <script type="module" src="main.js" defer></script>
   </head>
+  <!-- 本文（body）部分 -->
   <body></body>
 </html>

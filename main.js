@@ -1,7 +1,7 @@
 import * as THREE from "three"; // Three.jsライブラリをインポートします。
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 
-(() => {
+(async () => {
   // シーン、カメラ、レンダラー、キューブの宣言
   let scene, camera, renderer, cube;
 
@@ -95,7 +95,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   window.onresize = handleResize;
 
   // 初期化関数を呼び出してシーンをセットアップします。
-  init();
+  await init();
 
   // アニメーションループを開始します。
   animate();

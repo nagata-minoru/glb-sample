@@ -81,7 +81,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
     requestAnimationFrame(animate);
 
     // キューブの回転値を少しずつ増やしてアニメーションを作ります。
-    cube.rotation.x += 0.005;
+    cube.rotation.x -= 0.005;
     cube.rotation.y += 0.005;
 
     loadedModel.rotation.x += 0.01;

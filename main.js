@@ -1,13 +1,16 @@
-import * as THREE from 'three'; // Three.jsライブラリをインポートします。
+import * as THREE from "three"; // Three.jsライブラリをインポートします。
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 
 (() => {
   // シーン、カメラ、レンダラー、キューブの宣言
   let scene, camera, renderer, cube;
 
+  let loadedModel;
+
   /**
    * シーンの初期化
    */
-  const init = () => {
+  const init = async () => {
     // シーンを作成します。シーンはオブジェクトや光源を格納するコンテナです。
     scene = new THREE.Scene();
 
@@ -21,6 +24,8 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
     // レンダラーのサイズを現在のウィンドウのサイズに設定します。
     renderer.setSize(window.innerWidth, window.innerHeight);
 
+    // renderer.setClearColor(0xefefef);
+
     // レンダラーをDOMに追加します。これにより描画結果が表示されます。
     document.body.appendChild(renderer.domElement);
 
@@ -29,7 +34,7 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
 
     // テクスチャローダーを使用してテクスチャをロードします。テクスチャは画像を3Dオブジェクトにマッピングするために使用されます。
     let path = document.location.pathname;
-    path = path.substring(0, path.lastIndexOf('/') + 1);
+    path = path.substring(0, path.lastIndexOf("/") + 1);
     let baseUrl = document.location.origin + path;
     const texture = new THREE.TextureLoader().load(`${baseUrl}textures/wall.jpg`);
 
@@ -39,12 +44,22 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
     // ジオメトリとマテリアルからメッシュ（実際に描画される3Dオブジェクト）を作成します。
     cube = new THREE.Mesh(geometry, material);
 
+    cube.position.x = -1.1;
+
     // メッシュをシーンに追加します。
     scene.add(cube);
 
+    const loader = new GLTFLoader();
+    loadedModel = await new Promise((resolve) =>
+      loader.load("./scene.glb", (object) => resolve(object.scene), undefined, (error) => console.log(error))
+    );
+
+    loadedModel.position.x = 1.1;
+    scene.add(loadedModel);
+
     // カメラをZ軸上に移動（キューブを適切に見るため）
-    camera.position.z = 5;
-  }
+    camera.position.z = 7;
+  };
 
   /**
    * ウィンドウがリサイズされた時のイベントハンドラ
@@ -56,7 +71,7 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
     camera.updateProjectionMatrix();
     // レンダラーのサイズを新しいウィンドウのサイズに再設定します。
     renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  };
 
   /**
    * アニメーションループ
@@ -66,12 +81,15 @@ import * as THREE from 'three'; // Three.jsライブラリをインポートし�
     requestAnimationFrame(animate);
 
     // キューブの回転値を少しずつ増やしてアニメーションを作ります。
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    cube.rotation.x += 0.005;
+    cube.rotation.y += 0.005;
+
+    loadedModel.rotation.x += 0.01;
+    loadedModel.rotation.y += 0.01;
 
     // シーンとカメラを渡して描画を実行します。
     renderer.render(scene, camera);
-  }
+  };
 
   // ウィンドウのリサイズイベントにイベントハンドラを設定します。
   window.onresize = handleResize;

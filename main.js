@@ -5,7 +5,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   // シーン、カメラ、レンダラー、キューブの宣言
   let scene, camera, renderer, cube;
 
-  let loadedModel, helper;
+  let loadedModel, boundingBoxHelper;
 
   /**
    * シーンの初期化
@@ -57,9 +57,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
     loadedModel.position.x = 1.1;
     scene.add(loadedModel);
 
-    helper = new THREE.BoxHelper(loadedModel, 0xffff00);
+    boundingBoxHelper = new THREE.BoxHelper(loadedModel, 0xffff00);
 
-    scene.add(helper);
+    scene.add(boundingBoxHelper);
 
     // カメラをZ軸上に移動（キューブを適切に見るため）
     camera.position.z = 7;
@@ -92,7 +92,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
     loadedModel.rotation.y += 0.01;
     loadedModel.rotation.z += 0.01;
 
-    helper.update();
+    boundingBoxHelper.update();
 
     // シーンとカメラを渡して描画を実行します。
     renderer.render(scene, camera);

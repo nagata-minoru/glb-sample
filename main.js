@@ -1,8 +1,12 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
+import { CylinderBounding, getCylinderBounding, drawCylinderBounding, updateCylinder } from './cylinder_bounding.js';
 
 (async () => {
   let scene, camera, renderer, texturedCube, loadedModel, boundingBoxHelper;
+
+  let foo;
+  let bar;
 
   /**
    * シーンを初期化します。
@@ -21,9 +25,16 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
     scene.add(loadedModel);
 
     boundingBoxHelper = new THREE.BoxHelper(loadedModel, 0xffff00);
-    scene.add(boundingBoxHelper);
+    // scene.add(boundingBoxHelper);
+
+    foo = getCylinderBounding(loadedModel);
+    bar = drawCylinderBounding(foo, scene);
 
     camera.position.z = 7;
+
+    camera.position.x = 0.5;
+    camera.position.y = 3;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
   };
 
   /**
@@ -107,10 +118,16 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   const animateObjects = () => {
     texturedCube.rotation.x -= 0.005;
     texturedCube.rotation.y += 0.005;
-    loadedModel.rotation.x += 0.01;
-    loadedModel.rotation.y += 0.01;
-    loadedModel.rotation.z += 0.01;
-    boundingBoxHelper.update();
+    // loadedModel.rotation.x += 0.01;
+    // loadedModel.rotation.y += 0.01;
+    // loadedModel.rotation.z += 0.01;
+
+    // bar.rotation.x += 0.01;
+    // bar.rotation.y += 0.01;
+    // bar.rotation.z += 0.01;
+    updateCylinder(loadedModel, bar)
+
+    // boundingBoxHelper.update();
   };
 
   window.onresize = handleResize;

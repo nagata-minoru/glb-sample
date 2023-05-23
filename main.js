@@ -22,13 +22,14 @@ import { CylinderBounding, getCylinderBounding, drawCylinderBounding, updateCyli
     scene.add(texturedCube);
 
     loadedModel = await loadModel();
-    scene.add(loadedModel);
 
-    boundingBoxHelper = new THREE.BoxHelper(loadedModel, 0xffff00);
-    // scene.add(boundingBoxHelper);
+    boundingCylinder = getCylinderBounding(loadedModel);
+    boundingCylinderHelper = createBoundingCylinderMesh(boundingCylinder, scene);
 
-    foo = getCylinderBounding(loadedModel);
-    bar = drawCylinderBounding(foo, scene);
+    modelGroup = new THREE.Group();
+    modelGroup.add(loadedModel);
+    modelGroup.add(boundingCylinderHelper);
+    scene.add(modelGroup);
 
     camera.position.z = 7;
 
@@ -118,16 +119,9 @@ import { CylinderBounding, getCylinderBounding, drawCylinderBounding, updateCyli
   const animateObjects = () => {
     texturedCube.rotation.x -= 0.005;
     texturedCube.rotation.y += 0.005;
-    // loadedModel.rotation.x += 0.01;
-    // loadedModel.rotation.y += 0.01;
-    // loadedModel.rotation.z += 0.01;
-
-    // bar.rotation.x += 0.01;
-    // bar.rotation.y += 0.01;
-    // bar.rotation.z += 0.01;
-    updateCylinder(loadedModel, bar)
-
-    // boundingBoxHelper.update();
+    modelGroup.rotation.x += 0.01;
+    modelGroup.rotation.y += 0.01;
+    modelGroup.rotation.z += 0.01;
   };
 
   window.onresize = handleResize;

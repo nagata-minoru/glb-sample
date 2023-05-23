@@ -76,7 +76,7 @@ export function getCylinderBounding(group) {
 export function createBoundingCylinderMesh(cylinderBounding) {
   // 円柱のジオメトリを作成します。半径、高さ、ラジアン分割数を指定します。
   const cylinderGeometry = new THREE.CylinderGeometry(
-    cylinderBounding.radius, cylinderBounding.radius, cylinderBounding.height, 32
+    cylinderBounding.radius, cylinderBounding.radius, cylinderBounding.height, 128
   );
 
   // ワイヤーフレームスタイルのマテリアルを作成します。ここでは色を赤に設定しています。

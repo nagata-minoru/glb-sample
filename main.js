@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
-import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_bounding.js';
+import { getCylinderBounding, createBoundingCylinderMesh } from "./cylinder_bounding.js";
 
 (async () => {
-  let scene, camera, renderer, texturedCube, loadedModel, gridHelper, axesHelper;
+  let scene, camera, renderer, texturedCube, loadedModel, gridHelper, axesHelper, light, ambient;
 
   let boundingCylinder;
   let boundingCylinderHelper;
@@ -44,6 +44,13 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
     scene.add(gridHelper);
     axesHelper = new THREE.AxesHelper(1000);
     scene.add(axesHelper);
+
+    light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(0, 100, 30);
+    scene.add(light);
+
+    ambient = new THREE.AmbientLight(0x404040, 0.9);
+    scene.add(ambient);
   };
 
   /**
@@ -94,7 +101,12 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
   const loadModel = async () => {
     const loader = new GLTFLoader();
     const model = await new Promise((resolve) =>
-      loader.load("./ennchuBaoundingBox.glb", (object) => resolve(object.scene), undefined, (error) => console.log(error))
+      loader.load(
+        "./ennchuBaoundingBox.glb",
+        (object) => resolve(object.scene),
+        undefined,
+        (error) => console.log(error)
+      )
     );
     model.position.x = 1.1;
     return model;

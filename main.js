@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 import { getCylinderBounding, createBoundingCylinderMesh } from "./cylinder_bounding.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 (async () => {
   let scene, camera, renderer, texturedCube, loadedModel, gridHelper, axesHelper, light, ambient;
@@ -8,7 +9,7 @@ import { getCylinderBounding, createBoundingCylinderMesh } from "./cylinder_boun
   let boundingCylinder;
   let boundingCylinderHelper;
   let modelGroup;
-  let theta = 0;
+  let controls;
 
   /**
    * シーンを初期化します。
@@ -39,6 +40,8 @@ import { getCylinderBounding, createBoundingCylinderMesh } from "./cylinder_boun
     camera.position.x = 0.5;
     camera.position.y = 3;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    controls = new OrbitControls(camera, renderer.domElement);
 
     gridHelper = new THREE.GridHelper(200, 500);
     scene.add(gridHelper);
@@ -128,12 +131,6 @@ import { getCylinderBounding, createBoundingCylinderMesh } from "./cylinder_boun
    */
   const animate = () => {
     requestAnimationFrame(animate);
-
-    theta += 0.1;
-    camera.position.x = 5 * Math.cos(THREE.MathUtils.degToRad(theta));
-    camera.position.z = 5 * Math.sin(THREE.MathUtils.degToRad(theta));
-    camera.lookAt(scene.position);
-
     animateObjects();
     renderer.render(scene, camera);
   };

@@ -1,8 +1,13 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
+import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_bounding.js';
 
 (async () => {
-  let scene, camera, renderer, texturedCube, loadedModel, boundingBoxHelper;
+  let scene, camera, renderer, texturedCube, loadedModel, gridHelper, axesHelper;
+
+  let boundingCylinder;
+  let boundingCylinderHelper;
+  let modelGroup;
 
   /**
    * シーンを初期化します。
@@ -18,12 +23,25 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
     scene.add(texturedCube);
 
     loadedModel = await loadModel();
-    scene.add(loadedModel);
 
-    boundingBoxHelper = new THREE.BoxHelper(loadedModel, 0xffff00);
-    scene.add(boundingBoxHelper);
+    boundingCylinder = getCylinderBounding(loadedModel);
+    boundingCylinderHelper = createBoundingCylinderMesh(boundingCylinder, scene);
+
+    modelGroup = new THREE.Group();
+    modelGroup.add(loadedModel);
+    modelGroup.add(boundingCylinderHelper);
+    scene.add(modelGroup);
 
     camera.position.z = 7;
+
+    camera.position.x = 0.5;
+    camera.position.y = 3;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    gridHelper = new THREE.GridHelper(200, 200);
+    scene.add(gridHelper);
+    axesHelper = new THREE.AxesHelper(1000);
+    scene.add(axesHelper);
   };
 
   /**
@@ -107,10 +125,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
   const animateObjects = () => {
     texturedCube.rotation.x -= 0.005;
     texturedCube.rotation.y += 0.005;
-    loadedModel.rotation.x += 0.01;
-    loadedModel.rotation.y += 0.01;
-    loadedModel.rotation.z += 0.01;
-    boundingBoxHelper.update();
+    modelGroup.rotation.x += 0.01;
+    modelGroup.rotation.y += 0.01;
+    modelGroup.rotation.z += 0.01;
   };
 
   window.onresize = handleResize;

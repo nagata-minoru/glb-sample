@@ -8,6 +8,7 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
   let boundingCylinder;
   let boundingCylinderHelper;
   let modelGroup;
+  let theta = 0;
 
   /**
    * シーンを初期化します。
@@ -17,6 +18,7 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
     scene = new THREE.Scene();
     camera = createCamera();
     renderer = createRenderer();
+    renderer.setClearColor(0xcfcfcf);
     document.body.appendChild(renderer.domElement);
 
     texturedCube = createTexturedCube();
@@ -38,7 +40,7 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
     camera.position.y = 3;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    gridHelper = new THREE.GridHelper(200, 200);
+    gridHelper = new THREE.GridHelper(200, 500);
     scene.add(gridHelper);
     axesHelper = new THREE.AxesHelper(1000);
     scene.add(axesHelper);
@@ -92,7 +94,7 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
   const loadModel = async () => {
     const loader = new GLTFLoader();
     const model = await new Promise((resolve) =>
-      loader.load("./scene.glb", (object) => resolve(object.scene), undefined, (error) => console.log(error))
+      loader.load("./ennchuBaoundingBox.glb", (object) => resolve(object.scene), undefined, (error) => console.log(error))
     );
     model.position.x = 1.1;
     return model;
@@ -114,6 +116,12 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
    */
   const animate = () => {
     requestAnimationFrame(animate);
+
+    theta += 0.1;
+    camera.position.x = 5 * Math.cos(THREE.MathUtils.degToRad(theta));
+    camera.position.z = 5 * Math.sin(THREE.MathUtils.degToRad(theta));
+    camera.lookAt(scene.position);
+
     animateObjects();
     renderer.render(scene, camera);
   };
@@ -125,9 +133,9 @@ import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_boun
   const animateObjects = () => {
     texturedCube.rotation.x -= 0.005;
     texturedCube.rotation.y += 0.005;
-    modelGroup.rotation.x += 0.01;
-    modelGroup.rotation.y += 0.01;
-    modelGroup.rotation.z += 0.01;
+    modelGroup.rotation.x += 0.001;
+    modelGroup.rotation.y += 0.001;
+    modelGroup.rotation.z += 0.001;
   };
 
   window.onresize = handleResize;

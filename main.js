@@ -1,12 +1,13 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
-import { CylinderBounding, getCylinderBounding, drawCylinderBounding, updateCylinder } from './cylinder_bounding.js';
+import { getCylinderBounding, createBoundingCylinderMesh } from './cylinder_bounding.js';
 
 (async () => {
   let scene, camera, renderer, texturedCube, loadedModel, gridHelper, axesHelper;
 
-  let foo;
-  let bar;
+  let boundingCylinder;
+  let boundingCylinderHelper;
+  let modelGroup;
 
   /**
    * シーンを初期化します。

@@ -3,7 +3,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader";
 import { CylinderBounding, getCylinderBounding, drawCylinderBounding, updateCylinder } from './cylinder_bounding.js';
 
 (async () => {
-  let scene, camera, renderer, texturedCube, loadedModel, boundingBoxHelper;
+  let scene, camera, renderer, texturedCube, loadedModel, gridHelper, axesHelper;
 
   let foo;
   let bar;
@@ -36,6 +36,11 @@ import { CylinderBounding, getCylinderBounding, drawCylinderBounding, updateCyli
     camera.position.x = 0.5;
     camera.position.y = 3;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    gridHelper = new THREE.GridHelper(200, 200);
+    scene.add(gridHelper);
+    axesHelper = new THREE.AxesHelper(1000);
+    scene.add(axesHelper);
   };
 
   /**
